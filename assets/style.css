@@ -1,6 +1,6 @@
 /* Container */
 .lightweight-contact-form {
-  max-width: 500px;
+  max-width: 550px;
   margin: 20px auto;
   padding: 20px;
   border: 1px solid #e5e7eb;
@@ -12,6 +12,7 @@
 /* Form fields wrapper */
 .lightweight-contact-form .form-group {
   margin-bottom: 15px;
+  margin-right: 20px;
 }
 
 /* Labels */
@@ -84,4 +85,8 @@
   border-radius: 6px;
   background-color: #fee2e2;
   color: #dc2626;
+}
+.required {
+  color: #dc2626;
+  margin-left: 2px;
 }
