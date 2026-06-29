@@ -39,3 +39,24 @@ function lcf_enqueue_scripts() {
     ]);
 }
 add_action('wp_enqueue_scripts', 'lcf_enqueue_scripts');
+
+register_activation_hook(__FILE__, 'lcf_create_table');
+
+function lcf_create_table() {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'lcf_messages';
+    $charset_collate = $wpdb->get_charset_collate();
+
+    $sql = "CREATE TABLE $table_name (
+        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(100) NOT NULL,
+        message TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id)
+    ) $charset_collate;";
+
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+}

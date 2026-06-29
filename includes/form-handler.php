@@ -1,6 +1,8 @@
 <?php
 require_once plugin_dir_path(__FILE__) . 'validation.php';
+
 function lcf_ajax_handler() {
+    global $wpdb;
     // nonce check
     if (!isset($_POST['lcf_nonce']) || 
         !wp_verify_nonce($_POST['lcf_nonce'], 'lcf_form_action')) {
@@ -17,7 +19,16 @@ function lcf_ajax_handler() {
             'errors' => $errors,
             'message' => 'Please fix the errors below.'
     ]);
+    }
+    $table_name = $wpdb->prefix . 'lcf_messages';
 
+    $wpdb->insert($table_name, [
+        'name' => $name,
+        'email' => $email,
+        'message' => $message,
+    ]);
+    if(!$wpdb->insert_id){
+        wp_send_json_error(['message' => 'Failed to save message. Please try again.']);
     }
 
     $sent = wp_mail(
