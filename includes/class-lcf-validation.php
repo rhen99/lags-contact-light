@@ -1,7 +1,9 @@
 <?php
 
-function lcf_validate_form($name, $email, $message) {
-    $errors = [];
+class LCF_Validation {
+
+    public static function validate($name, $email, $message) {
+        $errors = [];
     if (empty($name)) {
         $errors['name'] = 'Name is required.';
     }
@@ -15,4 +17,5 @@ function lcf_validate_form($name, $email, $message) {
     }
 
     return $errors;
+    }
 }

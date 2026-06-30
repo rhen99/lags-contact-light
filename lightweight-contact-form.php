@@ -6,57 +6,23 @@
  */
 
 if (!defined('ABSPATH')) exit;
-require_once plugin_dir_path(__FILE__) . 'includes/form-render.php';
-require_once plugin_dir_path(__FILE__) . 'includes/form-handler.php';
 
-function lcf_enqueue_styles_conditionally() {
-    if (is_singular()) {
-        global $post;
+// Load all classes
+require_once plugin_dir_path(__FILE__) . 'includes/class-lcf-db.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-lcf-validation.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-lcf-mailer.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-lcf-ajax.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-lcf-enqueue.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-lcf-shortcode.php';
 
-        if (has_shortcode($post->post_content, 'lightweight_contact_form')) {
-            wp_enqueue_style(
-                'lcf-style',
-                plugin_dir_url(__FILE__) . 'assets/style.css',
-                array(),
-                '1.0.0'
-            );
-        }
-    }
+// Init everything
+function lcf_init() {
+    new LCF_DB();
+    register_activation_hook(__FILE__, ['LCF_DB', 'create_table']);
+    new LCF_Validation();
+    new LCF_Mailer();
+    new LCF_AJAX();
+    new LCF_Enqueue();
+    new LCF_Shortcode();
 }
-add_action('wp_enqueue_scripts', 'lcf_enqueue_styles_conditionally');
-
-function lcf_enqueue_scripts() {
-    wp_enqueue_script(
-        'lcf-script',
-        plugin_dir_url(__FILE__) . 'assets/script.js',
-        [],
-        null,
-        true
-    );
-
-    wp_localize_script('lcf-script', 'lcf_ajax', [
-        'ajax_url' => admin_url('admin-ajax.php')
-    ]);
-}
-add_action('wp_enqueue_scripts', 'lcf_enqueue_scripts');
-
-register_activation_hook(__FILE__, 'lcf_create_table');
-
-function lcf_create_table() {
-    global $wpdb;
-
-    $table_name = $wpdb->prefix . 'lcf_messages';
-    $charset_collate = $wpdb->get_charset_collate();
-
-    $sql = "CREATE TABLE $table_name (
-        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-        name VARCHAR(100) NOT NULL,
-        email VARCHAR(100) NOT NULL,
-        message TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id)
-    ) $charset_collate;";
-
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
-}
+add_action('plugins_loaded', 'lcf_init');
