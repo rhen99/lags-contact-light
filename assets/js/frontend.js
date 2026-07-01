@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.querySelector("form");
+  const form = document.querySelector("#lightweight-contact-form");
   const messageBox = document.querySelector(".form-message");
   const submitButton = form.querySelector("button[type='submit']");
   const errorMessages = form.querySelectorAll(".error-message");
   const inputs = form.querySelectorAll("input, textarea");
+  
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     errorMessages.forEach((errorMessage) => {

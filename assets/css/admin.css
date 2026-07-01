@@ -1,0 +1,23 @@
+.page-numbers {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.page-numbers li {
+    list-style: none;
+}
+
+.page-numbers a,
+.page-numbers span {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid #ccd0d4;
+    text-decoration: none;
+}
+
+.page-numbers .current {
+    background: #2271b1;
+    color: #fff;
+    border-color: #2271b1;
+}
