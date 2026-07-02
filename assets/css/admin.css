@@ -21,3 +21,10 @@
     color: #fff;
     border-color: #2271b1;
 }
+.lags-unread {
+    background-color: #fff8e5 !important;
+    font-weight: bold !important;
+}
+.lags-filters .actions {
+    margin-right: 10px;
+}
