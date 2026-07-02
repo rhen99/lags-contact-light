@@ -111,6 +111,20 @@ class LAGS_DB
             ['%d']
         );
     }
+    public static function bulk_delete($ids)
+    {
+        global $wpdb;
+
+        $table = $wpdb->prefix . 'lags_messages';
+        $ids_placeholder = implode(',', array_fill(0, count($ids), '%d'));
+
+        return $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM $table WHERE id IN ($ids_placeholder)",
+                ...$ids
+            )
+        );
+    }
     public static function mark_as_read($id)
     {
         global $wpdb;
