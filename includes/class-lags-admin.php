@@ -10,6 +10,8 @@ class LAGS_Admin
         add_action('admin_init', [$this, 'handle_delete_action']);
         add_action('admin_init', [$this, 'handle_mark_read']);
         add_action('admin_init', [$this, 'handle_mark_unread']);
+        add_action('wp_ajax_lags_toggle_read', [$this, 'ajax_toggle_read']);
+        add_action('wp_ajax_lags_get_unread_count', [$this, 'ajax_get_unread_count']);
     }
 
     public function register_menu()
@@ -134,5 +136,51 @@ class LAGS_Admin
         ob_start();
         include plugin_dir_path(__FILE__) . 'partials/admin-messages-table.php';
         echo ob_get_clean();
+    }
+    public function ajax_toggle_read()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Unauthorized']);
+        }
+
+        $id = intval($_POST['id']);
+        $action = sanitize_text_field($_POST['toggle_action']);
+        $nonce = $_POST['nonce'];
+
+        if (!wp_verify_nonce($nonce, 'lags_' . $action . '_' . $id)) {
+            wp_send_json_error(['message' => 'Invalid nonce']);
+        }
+
+        if ($action === 'mark_read') {
+            LAGS_DB::mark_as_read($id);
+            $new_action = 'mark_unread';
+            $new_label = 'Mark as Unread';
+        } else {
+            LAGS_DB::mark_as_unread($id);
+            $new_action = 'mark_read';
+            $new_label = 'Mark as Read';
+        }
+
+        wp_send_json_success([
+            'new_action' => $new_action,
+            'new_label' => $new_label,
+            'is_read' => $action === 'mark_read' ? 1 : 0,
+            'unread_count' => LAGS_DB::get_unread_count(),
+            'new_nonce' => wp_create_nonce('lags_' . $new_action . '_' . $id)
+        ]);
+    }
+
+
+    public function ajax_get_unread_count()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error();
+        }
+
+        $count = LAGS_DB::get_unread_count();
+
+        wp_send_json_success([
+            'count' => intval($count)
+        ]);
     }
 }

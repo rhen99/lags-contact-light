@@ -46,7 +46,11 @@
         <a href="<?php echo wp_nonce_url(
                         admin_url('admin.php?page=lags-messages&action=' . $action . '&id=' . $msg->id),
                         'lags_' . $action . '_' . $msg->id
-                    ); ?>">
+                    ); ?>"
+            class="toggle-read"
+            data-id="<?php echo $msg->id; ?>"
+            data-action="<?php echo $action; ?>"
+            data-nonce="<?php echo wp_create_nonce('lags_' . $action . '_' . $msg->id); ?>">
             <?php echo esc_html($label); ?>
         </a>
     </td>

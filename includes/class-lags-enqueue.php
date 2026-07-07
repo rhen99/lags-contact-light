@@ -46,5 +46,8 @@ class LAGS_Enqueue
             'lags-admin-css',
             plugin_dir_url(__FILE__) . '../assets/css/admin.css'
         );
+        wp_localize_script('lags-admin-js', 'lags_admin_ajax', [
+            'ajax_url' => admin_url('admin-ajax.php')
+        ]);
     }
 }
