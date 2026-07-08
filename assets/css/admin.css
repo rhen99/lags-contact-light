@@ -1,30 +1,45 @@
 .page-numbers {
-    display: flex;
-    gap: 5px;
-    align-items: center;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .page-numbers li {
-    list-style: none;
+  list-style: none;
 }
 
 .page-numbers a,
 .page-numbers span {
-    display: inline-block;
-    padding: 4px 8px;
-    border: 1px solid #ccd0d4;
-    text-decoration: none;
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid #ccd0d4;
+  text-decoration: none;
 }
 
 .page-numbers .current {
-    background: #2271b1;
-    color: #fff;
-    border-color: #2271b1;
+  background: #2271b1;
+  color: #fff;
+  border-color: #2271b1;
 }
 .lags-unread {
-    background-color: #fff8e5 !important;
-    font-weight: bold !important;
+  background-color: #fff8e5 !important;
+  font-weight: bold !important;
 }
 .lags-filters .actions {
-    margin-right: 10px;
+  margin-right: 10px;
+}
+#message-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  margin: 10% auto;
+  width: 400px;
 }

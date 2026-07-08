@@ -42,6 +42,15 @@
         <a href="<?php echo esc_url($delete_url); ?>"
             onclick="return confirm('Are you sure you want to delete this message?');">
             Delete
+        </a> | <a href="#"
+            class="view-message"
+            data-id="<?php echo $msg->id; ?>"
+            data-name="<?php echo esc_attr($msg->name); ?>"
+            data-email="<?php echo esc_attr($msg->email); ?>"
+            data-message="<?php echo esc_attr($msg->message); ?>"
+            data-is-read="<?php echo $msg->is_read; ?>"
+            data-nonce="<?php echo wp_create_nonce('lags_mark_read_' . $msg->id); ?>">
+            View
         </a> |
         <a href="<?php echo wp_nonce_url(
                         admin_url('admin.php?page=lags-messages&action=' . $action . '&id=' . $msg->id),
@@ -55,3 +64,12 @@
         </a>
     </td>
 </tr>
+<div id="message-modal" style="display:none;">
+    <div class="modal-content">
+        <h2 id="modal-name"></h2>
+        <p><strong>Email:</strong> <span id="modal-email"></span></p>
+        <p id="modal-message"></p>
+
+        <button id="close-modal" class="button">Close</button>
+    </div>
+</div>
