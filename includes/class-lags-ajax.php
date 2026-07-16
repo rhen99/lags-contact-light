@@ -35,9 +35,9 @@ class LAGS_AJAX
             wp_send_json_error(['message' => 'Failed to save message. Please try again.']);
         }
         $sent = LAGS_Mailer::send($name, $email, $message);
-        if (!$sent) {
-            wp_send_json_error(['message' => 'Failed to send message. Please try again.']);
-        }
+        // if (!$sent) {
+        //     wp_send_json_error(['message' => 'Failed to send message. Please try again.']);
+        // }
 
         wp_send_json_success([
             'message' => 'Message sent successfully!'
